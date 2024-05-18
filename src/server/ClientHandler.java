@@ -6,8 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Objects;
 
-import messages.Message;
-import messages.QuitMessage;
+import messages.*;
 
 /**
  * this class handles a Single client that is connected by evaluating their
@@ -108,6 +107,60 @@ class ClientHandler extends Thread {
 		/**
 		 * HIER LOESUNG IMPLEMENTIEREN
 		 */
+		Message msg = (Message) input.readObject();
+		switch (msg.getType()) {
+			case READY:
+				ReadyMessage readyMsg = (ReadyMessage) msg;
+				isOccupied = false;
+				playerName = readyMsg.getUsername();
+				break;
+			case CANCEL:
+				isOccupied = true;
+				break;
+			case PLACED:
+				PlacedMessage placedMsg = (PlacedMessage) msg;
+				opponent.opponentMap = placedMsg.getMap();
+				placed = true;
+				if (opponent.hasPlaced()) {
+					startBattle();
+				}
+				break;
+			case SHOT:
+				ShotMessage shotMsg = (ShotMessage) msg;
+				processShot(shotMsg.getX(), shotMsg.getY());
+				break;
+			default:
+				// Handle other message types if necessary
+				break;
+		}
+	}
+	private void startBattle() {
+		// Münze werfen = 50 : 50
+		boolean playerStarts = Math.random() < 0.5;
+		if (playerStarts) {
+			sendMessage(new AttackMessage());
+		} else {
+			opponent.sendMessage(new AttackMessage());
+		}
+	}
+
+	private void processShot(int x, int y) {
+		boolean hit = opponentMap[x][y] != 0;
+		opponentMap[x][y] = 0;
+
+		ResultMessage resultMsg = new ResultMessage(x, y, hit, false);
+		sendMessage(resultMsg);
+
+		ResultMessage opponentResultMsg = new ResultMessage(x, y, hit, true);
+		opponent.sendMessage(opponentResultMsg);
+
+		if (calculateVictory()) {
+			sendMessage(new WinMessage(false));
+			opponent.sendMessage(new WinMessage(true));
+			opponent = null;  // End the game by clearing the opponent reference
+		} else {
+			opponent.sendMessage(new AttackMessage());
+		}
 	}
 
 	/**
@@ -120,18 +173,21 @@ class ClientHandler extends Thread {
 		/**
 		 * HIER LOESUNG IMPLEMENTIEREN
 		 */
-
+		try {
+			output.writeObject(message);
+			output.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * this method handles the messages received by the client.
 	 */
 	public void run() {
-
 		while (active) {
 			try {
 				task1();
-
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 				closeConnection();
