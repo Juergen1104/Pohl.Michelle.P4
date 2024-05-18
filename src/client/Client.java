@@ -63,7 +63,6 @@ public class Client {
             running = false;
             enterIP();
         }
-
     }
 
     public static void setUsername(String username) {
@@ -131,9 +130,9 @@ public class Client {
                     LowerField[][] playerField = GameScene.getGameScene().getGameBoard().getPlayerField();
                     UpperField[][] enemyField = GameScene.getGameScene().getGameBoard().getEnemyField();
                     if (fromOpponent) {
-                        playerField.saveResult(x, y, isHit);
+                        playerField[x][y].saveResult(isHit);
                     } else {
-                        enemyField.saveResult(x, y, isHit);
+                        enemyField[x][y].saveResult(isHit);
                     }
                     if (isHit) {
                         GameScene.shakeScreen();
@@ -147,7 +146,7 @@ public class Client {
                     int response = JOptionPane.showConfirmDialog(null, isWinner ? "You Win! Play again?" : "You Lost! Play again?",
                             isWinner ? "You Win" : "You Lost", JOptionPane.YES_NO_OPTION);
                     if (response == JOptionPane.YES_OPTION) {
-                        sendMessage(new ReadyMessage(/* appropriate parameters */));
+                        sendMessage(new ReadyMessage(client.getUsername()));
                         Window.switchToMenu(true);
                     } else {
                         sendMessage(new CancelMessage());
@@ -159,7 +158,6 @@ public class Client {
                     break;
             }
         }
-
 
         /**
          * this method decides the actions taken based on the Message type
@@ -180,6 +178,7 @@ public class Client {
                 }
             }
         }
+    }
 
         public String getOpponentName() {
             return opponentName;
@@ -200,5 +199,3 @@ public class Client {
             enterIP();
         }
     }
-}
-
