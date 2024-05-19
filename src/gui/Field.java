@@ -1,16 +1,10 @@
 package gui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-
 import misc.ShipType;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import java.awt.*;
 
 /**
  * This class is the parent class for the Upper and Lower field and establishes
@@ -81,16 +75,33 @@ public abstract class Field extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		Stroke defaultStroke = g2.getStroke();
 		g2.setStroke(new BasicStroke(3));
+
+		int size = 40;
+
+		int margin = size / 8;
+		int halfSize = size / 2;
+		int quarterSize = size / 4;
+
 		switch (condition) {
 		case HIT:
 			/**
 			 * HIER LOESUNG IMPLEMENTIEREN
 			 */
+			g2.setColor(Color.RED);
+			g2.setStroke(new BasicStroke(3));
+			g2.drawLine(x + margin, y + margin, x + size - margin, y + size - margin);
 			break;
 		case MISS:
 			/**
 			 * HIER LOESUNG IMPLEMENTIEREN
 			 */
+			g2.setColor(Color.GREEN);
+			g2.setStroke(new BasicStroke(3));
+
+			// Zeichne den Kreis in der Mitte des Feldes
+			g2.drawOval(x + quarterSize, y + quarterSize, halfSize, halfSize);
+
+
 		default:
 
 		}

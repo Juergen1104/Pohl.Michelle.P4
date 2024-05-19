@@ -1,19 +1,19 @@
 package misc;
 
-import java.awt.Image;
+import gui.Window;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-
-import gui.Window;
 
 /**
  * this class holds all the different ship types present in the game. Do note that every ship is
  * identified with its ordinal, meaning that no identical ships can be placed on the board.
  */
 public enum ShipType {
-  NONE, CARRIER, SUBMARINE, DESTROYER, BATTLESHIP, CRUISER;
+  NONE, CARRIER, SUBMARINE, DESTROYER, BATTLESHIP, CRUISER, RESCUEBOAT;
 	
   private static final String path = "resources/ships/";
   /**
@@ -33,6 +33,8 @@ public enum ShipType {
         return new int[]{2 * xSkew + 2, ySkew};
       case SUBMARINE, CRUISER:
         return new int[]{3 * xSkew + 4, ySkew};
+      case RESCUEBOAT:
+        return new int[]{2 * xSkew + 2, ySkew};
       default:
         return new int[2];
     }
@@ -49,7 +51,7 @@ public enum ShipType {
         return new int[]{5, 1};
       case BATTLESHIP:
         return new int[]{4, 1};
-      case DESTROYER:
+      case DESTROYER, RESCUEBOAT:
         return new int[]{2, 1};
       case SUBMARINE, CRUISER:
         return new int[]{3, 1};
