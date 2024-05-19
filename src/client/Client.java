@@ -86,7 +86,6 @@ public class Client {
          */
         try {
             Client.getClient().output.writeObject(message);
-            //Client.sendMessage(message);
             Client.getClient().output.flush();
         } catch (Exception e) {
             e.printStackTrace();
