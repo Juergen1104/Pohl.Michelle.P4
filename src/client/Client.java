@@ -1,24 +1,20 @@
 package client;
 
-import gui.*;
-import messages.CancelMessage;
-import messages.Message;
-import messages.PlacedMessage;
-import messages.ReadyMessage;
-import messages.ResultMessage;
-import messages.StartMessage;
-import messages.WinMessage;
+import gui.GameScene;
+import gui.LowerField;
+import gui.UpperField;
+import gui.Window;
+import messages.*;
 import misc.Phases;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import java.util.Objects;
-import javax.swing.JOptionPane;
 
 /**
  * Acts as the Connection to the Server from the Player and coordinates every
@@ -89,8 +85,9 @@ public class Client {
          * HIER LOESUNG IMPLEMENTIEREN
          */
         try {
-            output.writeObject(message);
-            output.flush();
+            Client.getClient().output.writeObject(message);
+            //Client.sendMessage(message);
+            Client.getClient().output.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,7 +115,7 @@ public class Client {
                     break;
                 case ATTACK:
                     GameScene.setPhase(Phases.FIGHTING);
-                    GameScene.setNotification("Angriff!");
+                    GameScene.getGameScene().setNotification("Angriff!",Color.GREEN);
                     break;
                 case RESULT:
                     ResultMessage resultMsg = (ResultMessage) msg;
@@ -135,9 +132,9 @@ public class Client {
                         enemyField[x][y].saveResult(isHit);
                     }
                     if (isHit) {
-                        GameScene.shakeScreen();
+                        GameScene.getGameScene().shakeScreen();
                     }
-                    Window.repaint();
+                    Window.getWindow().repaint();
                     break;
                 case WIN:
                     WinMessage winMsg = (WinMessage) msg;
