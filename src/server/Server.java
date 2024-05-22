@@ -2,18 +2,14 @@ package server;
 
 import messages.StartMessage;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.awt.*;
-
 import java.util.Objects;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 /**
  * This class represents the Server and allows Clients to connect and play
@@ -106,7 +102,6 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -125,7 +120,6 @@ public class Server {
      */
     public static void main(String[] args) {
         createServer();
-
     }
 
     public LinkedList<ClientHandler> getAllClients() {

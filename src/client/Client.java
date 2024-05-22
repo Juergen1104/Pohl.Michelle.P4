@@ -86,7 +86,6 @@ public class Client {
          */
         try {
             Client.getClient().output.writeObject(message);
-            //Client.sendMessage(message);
             Client.getClient().output.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +109,7 @@ public class Client {
                     Window.switchToGame();
                     break;
                 case QUIT:
-                    JOptionPane.showMessageDialog(null, "Dein Gegner hat das Spiel verlassen.", "Gegner gibt aus", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Dein Gegner hat das Spiel verlassen.", "Gegner gibt auf", JOptionPane.INFORMATION_MESSAGE);
                     Window.switchToMenu(false);
                     break;
                 case ATTACK:
@@ -140,7 +139,7 @@ public class Client {
                     WinMessage winMsg = (WinMessage) msg;
                     boolean isWinner = winMsg.isOpponent();
 
-                    int response = JOptionPane.showConfirmDialog(null, isWinner ? "You Win! Play again?" : "You Lost! Play again?",
+                    int response = JOptionPane.showConfirmDialog(null, isWinner ? "Gewonnen! Nochmal?" : "Verloren! Noch mal?",
                             isWinner ? "You Win" : "You Lost", JOptionPane.YES_NO_OPTION);
                     if (response == JOptionPane.YES_OPTION) {
                         sendMessage(new ReadyMessage(client.getUsername()));
@@ -151,7 +150,6 @@ public class Client {
                     }
                     break;
                 default:
-                    // Handle other message types if necessary
                     break;
             }
         }
